@@ -1,0 +1,36 @@
+{% extends "playground/base.html" %}
+
+{% load json_formatting string_formatting %}
+
+{% block content %}
+<div class="page-header">
+    <h3>Sensor Snapshots</h3>
+</div>
+
+<table class="table table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Team</th>
+            <th>UUID</th>
+            <th>Last Update</th>
+        </tr>
+    </thead>
+
+    {% for sensor in sensors %}
+    <tr>
+        <td>
+            <b><a href="{% url 'playground-snapshot-detail' sensor.team.identifier sensor.uuid %}">{{sensor.name}}</a></b>
+        </td>
+        <td>{{sensor.team.name}}</td>
+        <td>
+            <code>{{sensor.uuid}}</code>
+        </td>
+        <td>
+            {{sensor.modified|timesince}} ago
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+{% endblock content %}

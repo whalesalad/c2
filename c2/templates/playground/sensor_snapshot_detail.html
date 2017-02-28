@@ -1,0 +1,52 @@
+{% extends "playground/base.html" %}
+
+{% load json_formatting string_formatting %}
+
+{% block head %}
+<script type="text/javascript" src="{{STATIC_URL}}vendor/renderjson/renderjson.min.js"></script>
+
+<style type="text/css">
+    .renderjson a              { text-decoration: none; }
+    .renderjson .disclosure    { color: #AAA; font-weight: bold; }
+    .renderjson .syntax        { color: #333; }
+    .renderjson .string        { color: red; }
+    .renderjson .number        { color: #099; }
+    .renderjson .boolean       { color: plum; }
+    .renderjson .key           { color: #000080; }
+    .renderjson .keyword       { color: orange; }
+    .renderjson .object.syntax { color: #333; }
+    .renderjson .array.syntax  { color: #FF005A; }
+</style>
+{% endblock head %}
+
+{% block content %}
+<div class="page-header">
+    <h3>
+        {{sensor.name}}&nbsp;
+        <small>{{sensor.team.name}}</small>
+    </h3>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        {% for slug,property in snapshot.attributes.items %}
+        <p>
+            <a href="{% url 'playground-snapshot-detail' sensor.team.identifier sensor.uuid slug %}">{{slug|unslug}}</a>
+            <br/>{{property.ts|datetime|timesince}} ago</p>
+        {% endfor %}{# for key in snapshot.attributes.keys #}
+        <br>
+    </div>
+
+    <div class="col-md-9">
+        {% if attribute %}
+        <h3>{{key|unslug}} <small>{{attribute.type}}</small></h3>
+        <p>Last updated {{attribute.ts|datetime|timesince}} ago.</p>
+        <pre>{{attribute.value|json}}</pre>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
+
+{% block footer %}
+
+{% endblock footer %}

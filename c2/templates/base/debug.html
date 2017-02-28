@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sensor Debug</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="{{STATIC_URL}}favicon.ico" />
+
+    <title>{% block title %}{{ HTML_TITLE|default:"Recon" }}{% endblock %} – C2</title>
+
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}components/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}components/bootstrap/css/bootstrap-theme.min.css"/>
+
+    {% block head %}{% endblock %}
+</head>
+
+<body id="{{ page.class|default:"default" }}-page">
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    {% block footer %}{% endblock %}
+</body>
+</html>

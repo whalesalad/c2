@@ -1,0 +1,59 @@
+{% extends "billing/base.html" %}
+{% load humanize %}
+
+
+{% block content %}
+
+<div class="page-header">
+    <h2>{{ team }}</h2>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+    <ol class="breadcrumb">
+      <li><a href="{% url 'billing-index' %}">Teams</a></li>
+      <li><a href="{% url 'team-detail' team.identifier %}">{{ team.identifier }}</a></li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
+    <form id="team_form" class="form-horizontal" method="POST" action="/billing/teams/{{ team.identifier }}">{% csrf_token %}
+      <div class="form-group">
+        <label for="account_id">Account ID:</label>
+        {% if team.account_id %}{{ team.account_id }}{% else %}-{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="team_name">Account Name:</label>
+        {{ team.name }}
+      </div>
+      <div class="form-group">
+        <label for="sensors">Current Sensors:</label>
+        {{ sensors }}
+      </div>
+      <div class="form-group">
+        <label for="account_status">Account Status:</label>
+        <select type="select" name="is_active" id="account_status" form="team_form" class="form-control">
+          <option value="True" {% if team.is_active %}selected{% endif %}>Active</option>
+          <option value="False" {% if not team.is_active %}selected{% endif %}>Inactive</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="identifier">Account Identifier:</label>
+        <span id="identifier">{{ team.identifier }}</span>
+      </div>
+      <div class="form-group">
+        <label for="max_sensors">Max Sensors:</label>
+        <input type="range" min="0" max="1000" value="{{ team.max_sensors }}" name="max_sensors" step="50" id="fader" onChange="outputUpdate(value)">
+        <output for="max_sensors" id="sensor_count">{{team.max_sensors}}</output>
+      </div>
+      <button class="btn btn-danger pull-right" type="submit">Save</button>
+    </form>
+  </div>
+  <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+    <a href="{% url 'new-team-member' team.identifier %}" class="btn btn-primary">Add User</a>
+    <a href="{% url 'team-members' team.identifier %}" class="btn btn-info">Team Members</a>
+  </div>
+</div>
+
+{% endblock content %}

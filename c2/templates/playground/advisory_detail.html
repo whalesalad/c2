@@ -1,0 +1,67 @@
+{% extends "playground/base.html" %}
+
+{% load json_formatting string_formatting %}
+
+{% block content %}
+<div class="page-header">
+    <h2>{{ advisory.title }}</h2>
+</div>
+
+<table class="table table-condensed">
+    {% for e in events %}
+        <tr {% ifequal e.id advisory.event.id %}class="info"{% endifequal %}>
+            <td>
+                {% ifequal e.id advisory.event.id %}
+                <span class="label label-primary">
+                    Causing Event
+                </span>
+                <br/>
+                {% endifequal %}
+                {{e.key}}
+                <br/>
+                {{e.id}}
+            </td>
+
+            <td>
+                <p>{% if e.description %}
+                    {{e.description}}
+                {% else %}
+                    {{e}}
+                {% endif %}</p>
+
+                {% if e.human_changes %}
+                <p>{{e.human_changes|join:"<br/>"}}</p>
+                {% endif %}
+
+                {% comment %}
+                <button class="btn btn-danger btn-sm" data-toggle="collapse" data-target="#changes-old-{{e.id}}">
+                    Toggle Old
+                </button>
+                <button class="btn btn-success btn-sm" data-toggle="collapse" data-target="#changes-new-{{e.id}}">
+                    Toggle New
+                </button>
+                {% if e.changes %}
+                <button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#changes-{{e.id}}">
+                    Toggle Changes
+                </button>
+                {% endif %}
+
+                {% if e.changes %}
+                <pre class="collapse" id="changes-{{e.id}}">CHANGES
+{{e.changes|json}}</pre>
+                {% endif %}
+
+                <pre class="collapse" id="changes-old-{{e.id}}">OLD
+{{e.old|json}}</pre>
+                <pre class="collapse" id="changes-new-{{e.id}}">NEW
+{{e.new|json}}</pre>
+                {% endcomment %}
+
+            </td>
+
+            <td>{{e.occurred|event_delta:primary.occurred}}</td>
+        </tr>
+    {% endfor %}{# for e in events #}
+</table>
+
+{% endblock content %}

@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-3 text-right">
+        <h4>{{instance.id}}</h4>
+        <p>{{instance.state|title}}</p>
+        <p class="text-muted">{{instance.instance_type}}</p>
+    </div>
+
+    <div class="col-md-9">
+        <dl>
+            <dt>Private DNS</dt>
+            <dd><p>{{instance.private_dns_name}}</p></dd>
+
+            <dt>Private IP</dt>
+            <dd><p>{{instance.private_ip_address}}</p></dd>
+
+            <dt>Tags</dt>
+            <dd>
+                <ul>
+                    {% for key,val in instance.tags.items %}
+                    <li>{{key}}: {{val}}</li>
+                    {% endfor %}
+                </ul>
+            </dd>
+
+            <dt>Public DNS</dt>
+            <dd><p>{{instance.public_dns_name}}</p></dd>
+
+            <dt>Public IP</dt>
+            <dd><p>{{instance.ip_address}}</p></dd>
+        </dl>
+    </div>
+</div>

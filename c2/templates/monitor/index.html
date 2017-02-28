@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html ng-app="monitorApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" />
+
+    <title>Sensor Monitor</title>
+
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}components/bootstrap/css/bootstrap.min.css"/>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+    <style>
+    @font-face {
+        font-family: "Gotham-Black";
+        src: url('/static/fonts/Gotham-Black.eot');
+        src: url('/static/fonts/Gotham-Black.woff') format("woff"), url('/static/fonts/Gotham-Black.ttf') format("truetype"), url('/static/fonts/Gotham-Black.svg#font') format("svg");
+    }
+
+    body {
+        background-color: #101214;
+        font-family: "Lato", sans-serif;
+        font-weight: 300;
+        font-size: 1.4em;
+        color: rgb(211, 212, 212);
+        margin: 1em;
+    }
+
+    h1 {
+        font-family: "Gotham-Black";
+        margin-top: 10px;
+        text-transform: uppercase;
+    }
+
+    td {
+        border-top-color: #333 !important;
+    }
+
+    tr:nth-child(2n+1) td {
+        background: #222;
+    }
+
+    .emphasis {
+        font-family: "Lato-Regular", sans-serif;
+        font-weight: bold;
+    }
+
+    .uuid {
+        font-size: 0.8em;
+        font-family: "Lato-Italic", sans-serif;
+        padding-left: 20px;
+    }
+
+    .description {
+        font-size: 0.8em;
+    }
+
+    .bullet {
+        display: inline-block;
+        position: relative;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        padding:4px;
+        top: 1px;
+        margin-right: 2px;
+        border-width: 3px;
+        background: transparent;
+        border-color: white;
+    }
+    .bullet.high {border-color: #d62626;}
+    .bullet.medium {border-color: #eae809;}
+    .bullet.low {border-color: #61d427;}
+
+    .system {background-color: rgb(221,52,151);}
+    .network {background-color: rgb(174,1,126);}
+    .authentication {background-color: rgb(122,1,119);}
+    .security {background-color: rgb(73,0,106);}
+
+    .label-active {
+        font-size: 0.6em;
+        border: 1px solid rgb(211, 212, 212);
+        padding: 0px 4px 0px 4px;
+        margin-left: 4px;
+    }
+
+    .timer {
+        margin: 30px 0px 10px 0px;
+    }
+
+    .peek {
+        width: 560px;
+        height: 386px;
+        position: fixed;
+        display: none;
+        bottom: -400px;
+    }
+
+    </style>
+    <script type="text/javascript">
+        var static_url = '{{STATIC_URL}}';
+    </script>
+
+</head>
+<body ng-controller="monitorCtrl">
+{% verbatim %}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Sensor Monitor</h1>
+        </div>
+        <div class="col-md-6 text-right">
+            <div class="timer">Updating in {{update/1000}} seconds</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-condensed">
+                <tr ng-repeat="advisory in advisories">
+                    <td>
+                        <span class="emphasis">{{advisory.team}}</span><br />
+                        {{advisory.created|amCalendar}}
+                    </td>
+
+                    <td>
+                        <i class="bullet" ng-class="advisory.sensor_level.toLowerCase()"></i> <span class="emphasis">{{advisory.sensor_name}}</span><br />
+                        <span class="uuid">{{advisory.sensor_uuid}}</span>
+                    </td>
+
+                    <td class="text-center">
+                        <span class="label" ng-class="advisory.group.toLowerCase()">{{advisory.group}}</span>
+                    </td>
+
+                    <td>
+                        <span class="emphasis">{{advisory.title}}</span>
+                        <span ng-hide="!advisory.is_active" class="label-active">ACTIVE</span><br />
+                        <span class="description">{{advisory.description}}</span>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endverbatim %}
+    <div class="peek" peeker="{{STATIC_URL}}app/img/monitor/"></div>
+    <script type="text/javascript" src="{{STATIC_URL}}vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}components/underscore/underscore.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}components/buzz/buzz.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}components/moment/moment.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}components/angular-moment/angular-moment.js"></script>
+    <script type="text/javascript">
+        var monitorApp = angular.module('monitorApp', ['angularMoment']);
+
+        monitorApp.directive('peeker',['$interval', function($interval){
+            return {
+               restrict: 'A',
+               link: function(scope, element, attrs){
+
+                    function randomLeft(){
+                        rightmost = $(window).width() - 560;
+                        return Math.floor(Math.random() * rightmost);
+                    }
+
+                    function dice(){
+                        return Math.floor(Math.random() * 5) + 1;
+                    }
+
+                    function peek() {
+                        element.empty().css('left',randomLeft()).show();
+                        element.append($('<img/>',{src:attrs.peeker+'peek'+dice()+'.png'}));
+                        element.delay(3000).animate({
+                            'bottom' : '-10px'
+                        },400, function(){
+                            $(this).delay(200).animate({
+                                'bottom': '-400px'
+                            },100);
+
+                        });
+                    }
+                    $interval(function(){
+                        peek();
+                    }, 1000 * 55 * 5);
+               }
+            }
+        }]);
+
+
+        monitorApp.controller('monitorCtrl', function ($scope, $http, $interval) {
+            var updateInterval = 1000 * 60 * 1;
+            var lastID = undefined;
+            $scope.advisories = [];
+            $scope.update = updateInterval - 1000;
+
+
+            loadAdvisories = function(){
+                $http.get('/monitor/advisories/').success(function(data) {
+                    $scope.advisories = data;
+
+                    if ($scope.advisories.length > 0){
+                        var newLastID = $scope.advisories[0].id
+                    }
+
+                    if (lastID && newLastID !== lastID){
+                         playAlert();
+                    }
+                    lastID = newLastID;
+
+                });
+            }
+
+            function playAlert(){
+                var leroy = new buzz.sound( static_url+"/sounds/leroy", {
+                    formats: ['mp3']
+                });
+                leroy.play();
+
+            }
+
+            //update advisories at interval
+            $interval(function(){
+                loadAdvisories();
+                $scope.update = updateInterval;
+            }, updateInterval);
+
+            //update timer every second
+            $interval(function(){
+                $scope.update -= 1000;
+            },1000);
+
+            loadAdvisories();
+
+        });
+    </script>
+</body>
+</html>

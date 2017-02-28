@@ -1,0 +1,43 @@
+{% extends "billing/base.html" %}
+{% load humanize %}
+
+
+{% block content %}
+
+<div class="page-header">
+    <h2>{{ team }}</h2>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+    <ol class="breadcrumb">
+      <li><a href="{% url 'billing-index' %}">Teams</a></li>
+      <li><a href="{% url 'team-detail' identifier %}">{{ identifier }}</a></li>
+      <li><a href="{% url 'team-members' identifier %}">Members</a></li>
+    </ol>
+    <table class="table table-striped">
+      <thead>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Admin</th>
+      </thead>
+      <tbody>
+        {% for member in members|dictsort:'email' %}
+        <tr>
+          <td>{{ member.email }}</td>
+          <td>{{ member.first_name }}</td>
+          <td>{{ member.last_name }}</td>
+          {% if member.membership.role == 'A' %}
+          <td>Yes</td>
+          {% else %}
+          <td>No</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}

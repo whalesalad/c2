@@ -1,0 +1,42 @@
+{% extends "playground/base.html" %}
+{% load json_formatting %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Advisories</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        {% for advisory in advisories %}
+        <article>
+            <h4><a href="{% url 'advisory-detail' advisory.id %}">{{advisory.title}}</a></h4>
+            <p>#{{advisory.id}} – Created {{advisory.created|timesince}} ago</p>
+            <p class="text-muted">{{advisory.sensor_names|join:","}}</p>
+
+            <hr/>
+        </article>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Filter by Rule</div>
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="/playground/advisories">All</a>
+                </li>
+            {% for rule in rules %}
+                <li class="list-group-item">
+                    {% if rule.num_advisories %}
+                    <span class="badge">{{rule.num_advisories}}</span>
+                    {% endif %}
+                    <a href="/playground/advisories?rule={{rule.slug}}">{{rule}}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends "base/debug.html" %}
+{% load json_formatting %}
+
+{% block content %}
+
+<h1>
+    Advisory Delay Test
+</h1>
+
+{% for advisory in advisories %}
+<article>
+    <h3>{{advisory.title}}</h3>
+    <p>{{advisory.sensor.id}}</p>
+
+    <pre>{% spaceless %}
+        {{advisory.payload|json }}
+    {% endspaceless %}</pre>
+
+</article>
+{% endfor %}
+
+{% endblock content %}

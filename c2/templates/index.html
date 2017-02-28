@@ -1,0 +1,81 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}stylesheets.min.css">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base.min.css">
+{% endblock %}
+
+{% block footer %}
+{{block.super}}
+<script type="text/javascript" src="{{STATIC_URL}}dependencies.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}app.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}templates.min.js"></script>
+{% endblock footer %}
+
+{% block content %}
+<header id="header">
+  <img id="logo-enterprise" src="{{STATIC_URL}}logo-enterprise-large.svg" />
+  <h1 id="header">EG.</h1><small>Enterprise</small>
+  <ul class="right-buttons" ng-show="user">
+    <li>
+      <a ui-sref="account.detail({ subview: 'keys'})">
+        <i class="fa fa-cogs"></i>
+      </a>
+    </li>
+
+    <li>
+      <a ui-sref="logout">
+        <i class="fa fa-sign-out"></i>
+      </a>
+    </li>
+  </ul>
+</header>
+
+<nav id="navbar" ng-hide="$state.includes('login')">
+  <ul class="primary-nav">
+    <li ui-sref-active="active">
+      <a ui-sref="dashboard">
+        <i class="fa fa-dashboard"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <li ui-sref-active="active">
+      <a ui-sref="advisories_map">
+        <i class="fa fa-sitemap"></i>
+        <span>Map</span>
+      </a>
+    </li>
+
+    <li ng-class="{ active: $state.includes('advisories') || $state.includes('advisory_investigator') }">
+      <a ui-sref="advisories">
+        <i class="fa fa-warning"></i>
+        <span>Advisories</span>
+      </a>
+    </li>
+
+    <li ng-class="{ active: $state.includes('servers') || $state.includes('server') }">
+      <a ui-sref="servers">
+        <i class="fa fa-server"></i>
+        <span>Hosts</span>
+      </a>
+    </li>
+
+    <li ng-class="{ active: $state.includes('events') }">
+      <a ui-sref="events">
+        <i class="fa fa-calendar"></i>
+        <span>Events</span>
+      </a>
+    </li>
+  </ul>
+  {% verbatim %}
+  <footer>
+    <p>&copy; {{ footer.year }} EG.</p>
+    <p>Version: {{ footer.version }}</p>
+  </footer>
+  {% endverbatim %}
+</nav>
+
+<div id="wrapper" ui-view></div>
+{% endblock %}

@@ -1,0 +1,76 @@
+[
+{
+  "fields": {
+    "name": "Example Team",
+    "identifier": "example",
+    "is_hidden": true
+  },
+  "model": "accounts.team",
+  "pk": 1
+},
+{
+  "fields": {
+    "first_name": "Ender",
+    "last_name": "Gamer",
+    "created": "2014-02-18T19:28:05.156Z",
+    "is_staff": true,
+    "last_login": "2014-02-18T19:28:17.289Z",
+    "password": "pbkdf2_sha256$12000$effEMvA4aG0J$4NLA8AyAn8sW+qAGAFBUF9RDsi/R58DfZ8Whj9RRIHY=",
+    "email": "c2@example.com"
+  },
+  "model": "accounts.user",
+  "pk": 1
+},
+{
+  "fields": {
+    "first_name": "Michael",
+    "last_name": "Whalen",
+    "created": "2014-04-28T18:40:12.657Z",
+    "is_staff": true,
+    "last_login": "2014-04-28T18:40:12.655Z",
+    "password": "pbkdf2_sha256$12000$mHgIKv7B1dTv$eCvDcFCp+i5JBo28RXEv5DyuwynmN7b5bMW578I+Irk=",
+    "email": "mwhalen@example.com"
+  },
+  "model": "accounts.user",
+  "pk": 2
+},
+{
+  "fields": {
+    "access_key": "D9425B9572C63C2ACAC8",
+    "name": "Endpoint #1",
+    "created": "2014-02-18T19:28:05.163Z",
+    "is_active": true,
+    "modified": "2014-02-18T19:30:07.800Z",
+    "team": 1,
+    "secret_key": "7dc2b272030bcb3f77ca4bc04d0bdc78701a4447"
+  },
+  "model": "accounts.apikey",
+  "pk": 1
+},
+{
+  "fields": {
+    "access_key": "2YUFPB0MRCBTIA35C28L",
+    "name": "",
+    "created": "2014-02-18T19:29:26.072Z",
+    "is_active": true,
+    "modified": "2014-02-18T19:29:26.072Z",
+    "team": 1,
+    "secret_key": "Zl0o8cvsLoeiPjyEdWvA5v34PrfCxkA0rgnI9tb3"
+  },
+  "model": "accounts.apikey",
+  "pk": 2
+},
+{
+  "fields": {
+    "access_key": "8IOM0OYOKECYX3SN79OV",
+    "name": "Endpoint #2",
+    "created": "2014-02-18T19:29:44.082Z",
+    "is_active": true,
+    "modified": "2014-02-18T19:29:44.082Z",
+    "team": 1,
+    "secret_key": "RoF75gEtt57428zbDCX2SKP8FjzYkrVo0WRc7lSN"
+  },
+  "model": "accounts.apikey",
+  "pk": 3
+}
+]

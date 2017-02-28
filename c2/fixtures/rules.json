@@ -1,0 +1,35 @@
+[
+{
+  "fields": {
+    "public": true,
+    "description": "Processes that should be running, or unusual processes for the host or group.",
+    "configuration": "{}",
+    "name": "Process Anomaly",
+    "slug": "process-anomaly"
+  },
+  "model": "rules.rule",
+  "pk": 1
+},
+{
+  "fields": {
+    "public": true,
+    "description": "Tracks installed packages for abnormalities for the host or group.",
+    "configuration": "{}",
+    "name": "Package Anomaly",
+    "slug": "package-anomaly"
+  },
+  "model": "rules.rule",
+  "pk": 2
+},
+{
+  "fields": {
+    "public": true,
+    "description": "Tracks system files for those known to be malicious.",
+    "configuration": "{}",
+    "name": "Malicious File",
+    "slug": "malicious-file"
+  },
+  "model": "rules.rule",
+  "pk": 3
+}
+]

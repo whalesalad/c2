@@ -1,0 +1,24 @@
+{
+    "cloud_metadata": {
+        "ami_id": "ami-3d50120d",
+        "local_hostname": "ip-172-25-1-203.us-west-2.compute.internal",
+        "public_ipv4": "54.213.56.232",
+        "hostname": "ip-172-25-1-203.us-west-2.compute.internal",
+        "local_ipv4": "172.25.1.203",
+        "instance_id": "i-34af133a",
+        "instance_type": "t2.micro",
+        "provider": "aws",
+        "availability_zone": "us-west-2c",
+        "public_hostname": "ec2-54-213-56-232.us-west-2.compute.amazonaws.com",
+        "type": "aws",
+        "security_groups": "TRUSTED-HOSTS"
+    },
+    "hostname": {
+        "hostname": "dev-master-client-1.egsense.com",
+        "fqdn": "ip-172-25-1-203.us-west-2.compute.internal"
+    },
+    "activity": {
+        "is_connected": true,
+        "last_seen": 1424364173
+    }
+}

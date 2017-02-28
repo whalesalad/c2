@@ -1,0 +1,46 @@
+{% extends "playground/base.html" %}
+{% load json_formatting %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Advisory Causes</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        {% for advisory in advisories %}
+        <article>
+            <h3>#{{advisory.id}} – {{advisory.title}}</h3>
+
+            <p class="text-muted"><small>Created {{advisory.created|timesince}} ago.</small></p>
+
+            <p>{{advisory.description}}</p>
+
+            <pre>{% spaceless %}
+                {{advisory.payload|json}}
+            {% endspaceless %}</pre>
+        </article>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Filter by Advisory</div>
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="/playground/causes/">All</a>
+                </li>
+            {% for rule in meta|dictsortreversed:"count" %}
+                <li class="list-group-item">
+                    {% if rule.count %}
+                    <span class="badge">{{rule.count}}</span>
+                    {% endif %}
+                    <a href="/playground/causes/{{rule.rule}}/">{{rule.title}}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}

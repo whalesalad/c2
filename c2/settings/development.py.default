@@ -1,0 +1,104 @@
+from base import *
+
+###############################################################################
+# Base settings are defined in settings/base.py
+# Define your local setting overrides here and rename development.py
+###############################################################################
+
+DEBUG = True
+
+KAFKA_HOST = "dev-master-kafka-1.local"
+KAFKA_EVENT_TOPIC = "dev-master-events"
+
+VERMONT_HOST = 'http://dev-master-vermont-1.local:8080'
+SKYHOOK_HOST = 'http://dev-master-skyhook-1.local:8080'
+KEYMASTER_HOST = 'http://dev-master-keymaster-1.local:8080'
+GRAPH_HOST = 'http://dev-master-neo4j-1.local:7474/db/data'
+
+DATABASES['default'] = {
+    'CONN_MAX_AGE'  : None,
+    'ENGINE'        : 'django.db.backends.postgresql_psycopg2',
+    'NAME'          : 'c2_dev',
+    'USER'          : '',
+    'PASSWORD'      : '',
+    'HOST'          : 'localhost',
+    'PORT'          : '',
+}
+
+MIDDLEWARE_CLASSES += ('c2.api.middleware.CORSHeadersMiddleware', )
+
+###############################################################################
+# If you're crazy about highly detailed logging like I am, use the following
+# loggers to get a very chatty kathy dev console
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            '()': 'colorlog.ColoredFormatter',
+            'format': '%(log_color)s%(levelname)s %(asctime)s %(module)s %(message)s',
+            'log_colors': {
+                'DEBUG':    'bold_black',
+                'INFO':     'white',
+                'WARNING':  'yellow',
+                'ERROR':    'red',
+                'CRITICAL': 'bold_red',
+            },
+        },
+        'sql_formatter': {
+            '()': 'colorlog.ColoredFormatter',
+            'format': '%(log_color)s[SQL] %(module)s %(message)s',
+            'log_colors': {
+                'DEBUG':    'bold_blue',
+                'INFO':     'bold_blue',
+                'WARNING':  'bold_blue',
+                'ERROR':    'bold_blue',
+                'CRITICAL': 'bold_blue',
+            },
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'sql_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'sql_formatter'
+        }
+    },
+    'loggers': {
+        'kafka': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'console': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['sql_handler'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'c2.utils.middleware': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    }
+}

@@ -1,0 +1,60 @@
+{% load json_formatting string_formatting %}
+
+<hr>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="label label-warning pull-right">{{group.region}}</span>
+        {{group.id}} &mdash; {{group.name}}{% if group.title %}&nbsp;&nbsp;({{group.title}}){% endif %}
+    </div>
+
+    <div class="panel-body">
+        <p>
+            <b>Instances:</b>
+            {% for instance in group.instances %}
+            <code>{{instance}}</code>
+            {% empty %}
+            None
+            {% endfor %}
+        </p>
+
+        <p>
+            <b>Tags:</b>
+            {% if not group.tags %}None{% endif %}
+        </p>
+        {% if group.tags %}
+        <pre>{{group.tags|json}}</pre>
+        {% endif %}
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Protocol</th>
+                <th>Ports</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rule in group.rules %}
+                {% for grant in rule.grants %}
+                <tr>
+                    <td>{{rule.protocol|upper}}</td>
+                    <td>
+                        {% if rule.from_port and rule.to_port %}
+                        {% if rule.from_port == rule.to_port %}
+                            {{rule.from_port}}
+                        {% else %}
+                            {{rule.from_port}}{% if rule.to_port %} &mdash; {{rule.to_port}}{% endif %}
+                            {% endif %}
+                        {% else %}
+                        All
+                        {% endif %}
+                    </td>
+                    <td><code>{{grant}}</code></td>
+                </tr>
+                {% endfor %}
+            {% endfor %}{# for rule in group.rules #}
+        </tbody>
+    </table>
+</div>

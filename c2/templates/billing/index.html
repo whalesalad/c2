@@ -1,0 +1,36 @@
+{% extends "billing/base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Teams</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+      <ol class="breadcrumb">
+        <li><a href="{% url 'billing-index' %}">Teams</a></li>
+      </ol>
+      <table class="table table-striped">
+        <thead>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Max Sensors</th>
+          <th>Account ID#</th>
+        </thead>
+        <tbody>
+          {% for team in teams|dictsort:'name' %}
+          <tr>
+            <td><a href="{% url 'team-detail' team.identifier %}">{{ team.name }}</a></td>
+            <td>{% if team.is_active %}Active{% else %}Inactive{% endif %}</td>
+            <td>{{ team.max_sensors }}</td>
+            <td>{% if team.account_id %}{{ team.account_id }}{% else %}-{% endif %}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+</div>
+
+{% endblock content %}

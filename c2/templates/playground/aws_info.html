@@ -1,0 +1,75 @@
+{% extends "playground/base.html" %}
+
+{% load json_formatting string_formatting %}
+
+{% block content %}
+<div class="page-header">
+    <h2>
+        {% if key %}
+        Amazon Details for {{team.name}}
+        {% else %}
+        Amazon Details
+        {% endif %}
+    </h2>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        {% if key %}
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#instances" data-toggle="tab">Instances</a></li>
+            <li><a href="#groups" data-toggle="tab">Security Groups</a></li>
+            <li><a href="#credentials" data-toggle="tab">Credentials</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="instances">
+                <h3>{{instances|length}} Instance{{instances|length|pluralize}}</h3>
+
+                {% for id,instance in instances.items %}
+                {% include "playground/fragments/aws_instance.html" %}
+                {% endfor %}
+            </div>
+
+            <div class="tab-pane" id="groups">
+                <h3>{{groups|length}} Security Group{{groups|length|pluralize}}</h3>
+                {% for group in groups|dictsortreversed:"instances" %}
+                {% include "playground/fragments/aws_security_group.html" %}
+                {% endfor %}
+            </div>
+
+            <div class="tab-pane" id="credentials">
+                <h3>AWS Credentials</h3>
+                <dl>
+                    <dt>Access Key</dt>
+                    <dd><code>{{key.access_key}}</code></dd>
+
+                    <dt>Secret Key</dt>
+                    <dd><code>{{key.secret_key}}</code></dd>
+
+                    <dt>Created</dt>
+                    <dd>{{key.created}}</dd>
+                </dl>
+            </div>
+        </div>
+        {% else %}
+        <p>Choose a team from the menu on the right to begin.</p>
+        {% endif %}
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Filter by Team</div>
+
+            <ul class="list-group">
+            {% for team in teams %}
+                <li class="list-group-item">
+                    <a href="{% url 'playground-aws-detail' team.identifier %}">{{team.name}}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

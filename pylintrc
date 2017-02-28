@@ -1,0 +1,2 @@
+[MESSAGES CONTROL]
+disable=trailing-whitespace,bad-whitespace,missing-docstring,anomalous-backslash-in-string,relative-import,bad-builtin,invalid-name,unnecessary-lambda,protected-access,abstract-method,line-too-long,no-init

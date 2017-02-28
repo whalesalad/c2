@@ -1,0 +1,17 @@
+[run]
+branch = True
+
+omit =
+    test/*
+    deploy/*
+    fabfile.py
+    c2/accounts/tests.py
+    c2/api/tests.py
+    c2/meta/tests.py
+    c2/playground/*
+    c2/sensors/tests.py
+    c2/wsgi.py
+
+
+[html]
+directory = coverage
